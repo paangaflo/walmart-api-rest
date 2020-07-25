@@ -1,13 +1,14 @@
 version: "3"
 services:
   api-database:
-    image: mongo:3.2.4
+    image: mongo:latest
     container_name: "api-database"
     ports:
       - 27017:27017
     command: --smallfiles
   api-database-seed:
-    image: mongo:3.2.4
+    image: mongo:latest
+    container_name: "api-database-seed"
     links:
       - api-database
     volumes:
@@ -15,7 +16,8 @@ services:
     command:
       /database/import.sh
   api:
-    image: api
+    image: api:latest
+    container_name: "api"
     ports:
       - 8080:8080
     links:

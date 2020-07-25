@@ -1,0 +1,33 @@
+name: Build docker Image CI and Deploy to Heroku CLI Container
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Compile project with Maven 
+      run: mvn clean install
+    - name: Build image project
+      run: docker build -t api .
+    - name: Build the docker-compose stack
+      run: docker-compose -f docker-compose.yml up -d
+    - name: Check running containers
+      run: docker ps -a
+    - name: Check logs
+      run: docker logs api
+    - name: Push to heroku
+      env :
+          HEROKU_REGISTRY_URL: registry.heroku.com
+          HEROKU_TOKEN : ${{ secrets.HEROKU_TOKEN }}
+      run : |
+          docker login --username=_ --password $HEROKU_TOKEN $HEROKU_REGISTRY_URL
+          export HEROKU_API_KEY=$HEROKU_TOKEN
+          heroku container:login
+          heroku container:push web --app walmart-api-rest
+          heroku container:release web --app walmart-api-rest
+          heroku ps:scale web=1 --app walmart-api-rest
