@@ -15,24 +15,37 @@ import org.springframework.web.bind.annotation.RestController;
 import com.walmart.api.model.Product;
 import com.walmart.api.repository.ProductRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api")
+@Api(tags = "product")
 public class ProductController {
 	@Autowired
 	ProductRepository productRepository;
 	
+	public ProductController() { }
+	
 	@GetMapping("/products")
+	@ApiOperation(value = "Get Products", notes = "Service to get any products")
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Records found"),
+			@ApiResponse(code = 204, message = "Records not found"),
+			@ApiResponse(code = 500, message = "Error searching records")})
 	public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) String search) {
 		try {
 			List<Product> products = new ArrayList<Product>();
 			
 			if (search == null) {
-				productRepository.findAll().forEach(products::add);
-			} else {
+				productRepository.findAll().forEach(products::add);;
+			}else {
 				productRepository.findByIdOrBrandOrDescription(search).forEach(products::add);
 			}
-
+			
 			if (products.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 			}
@@ -40,21 +53,21 @@ public class ProductController {
 			if (search != null && isPalindrome(search)) {
 				return new ResponseEntity<>(applyDiscount(products), HttpStatus.OK);
 			}
-			
+
 			return new ResponseEntity<>(products, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
-	private static boolean isPalindrome(String search) {
+	private boolean isPalindrome(String search) {
 		search = search.toLowerCase();
 		String invert = new StringBuilder(search).reverse().toString();
 		
 		return invert.equals(search);
 	}
 	
-	private static List<Product> applyDiscount(List<Product> products) {
+	private List<Product> applyDiscount(List<Product> products) {
 		products.forEach(product -> {
 			product.setPrice((int) Math.round(product.getPrice() * 0.5));
 			product.setDiscount(true);
