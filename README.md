@@ -15,6 +15,14 @@ Need to know Java SE and what a Maven project is and some Spring-boot.
 - [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [Docker](https://www.docker.com/get-docker)
 
+### Build in local environment
+
+Be sure to build project with Maven; you can build project directly from your preferred IDE; if have Maven configured in their local environment you can build the project with the following command.
+
+```
+mvn clean install
+```
+
 ### Running project with Docker
 
 We need to build the image by executing:
@@ -44,6 +52,11 @@ To add a search criterion only have to use parameter:
 http://localhost:8080/api/products?search=xyz
 ```
 
+If you want to see documentation online with UI Swagger you can enter the following link:
+
+```
+localhost:8080/swagger-ui.html
+```
 ## Built With
 
 * [Spring Tools](https://spring.io/tools) - The IDE used
