@@ -5,7 +5,6 @@ services:
     container_name: "api-database"
     ports:
       - 27017:27017
-    command: --smallfiles
   api-database-seed:
     image: mongo:latest
     container_name: "api-database-seed"
