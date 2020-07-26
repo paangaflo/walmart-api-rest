@@ -1,8 +1,5 @@
 name: Build docker Image CI and Deploy to Heroku CLI Container
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
   build:
