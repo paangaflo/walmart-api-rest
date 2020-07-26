@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Compile project with Maven 
-      run: mvn clean install
+      run: mvn clean install -Dmaven.test.skip=true
     - name: Build image project
       run: docker build -t api .
     - name: Build the docker-compose stack

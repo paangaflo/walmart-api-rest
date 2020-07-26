@@ -43,7 +43,11 @@ public class ProductController {
 			if (search == null) {
 				productRepository.findAll().forEach(products::add);;
 			}else {
-				productRepository.findByIdOrBrandOrDescription(search).forEach(products::add);
+				if(isNumeric(search)) {
+					productRepository.findByIdProduct(search).forEach(products::add);
+				}else {
+					productRepository.findByBrandOrDescription(search).forEach(products::add);
+				}
 			}
 			
 			if (products.isEmpty()) {
@@ -59,6 +63,18 @@ public class ProductController {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	public static boolean isNumeric(String strNum) {
+    if (strNum == null) {
+        return false;
+    }
+    try {
+        double d = Double.parseDouble(strNum);
+    } catch (NumberFormatException nfe) {
+        return false;
+    }
+    return true;
+}
 	
 	private boolean isPalindrome(String search) {
 		search = search.toLowerCase();
