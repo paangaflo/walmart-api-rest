@@ -7,10 +7,13 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 
 @Document(collection = "products")
 public class Product {
-
+	
 	@MongoId(FieldType.STRING)
+	@Field("_id")
+  private String _id;
+	
 	@Field("id")
-  private String id;
+  private String idProduct;
 	@Field("brand")
   private String brand;
   @Field("description")
@@ -25,12 +28,12 @@ public class Product {
   	this.discount = false;
   }
 
-  public String getId() {
-    return id;
+  public String getIdProduct() {
+    return idProduct;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setIdProduct(String id) {
+    this.idProduct = id;
   }
 
   public String getBrand() {

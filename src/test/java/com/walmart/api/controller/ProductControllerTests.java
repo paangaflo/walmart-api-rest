@@ -34,7 +34,7 @@ public class ProductControllerTests {
    @Test
    public void getProducts() throws Exception {
   	 Product product = new Product();
-  	 product.setId("1");
+  	 product.setIdProduct("1");
   	 product.setBrand("ooy eqrceli");
   	 product.setDescription("rlñlw brhrka");
   	 product.setImage("www.lider.cl/catalogo/images/whiteLineIcon.svg");
@@ -48,13 +48,13 @@ public class ProductControllerTests {
   	 mvc.perform(get("/api/products").contentType(APPLICATION_JSON))
   	 .andExpect(status().isOk())
   	 .andExpect(jsonPath("$", hasSize(1)))
-  	 .andExpect(jsonPath("$[0].id", is(product.getId())));
+  	 .andExpect(jsonPath("$[0].idProduct", is(product.getIdProduct())));
    }
 
    @Test
    public void getProductsByBrand() throws Exception {
   	 Product product = new Product();
-  	 product.setId("1");
+  	 product.setIdProduct("1");
   	 product.setBrand("ooy eqrceli");
   	 product.setDescription("rlñlw brhrka");
   	 product.setImage("www.lider.cl/catalogo/images/whiteLineIcon.svg");
